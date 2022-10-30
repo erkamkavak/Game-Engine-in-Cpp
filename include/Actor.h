@@ -22,8 +22,8 @@ namespace Brix {
         void removeComponent(class Component* component);
 
         // Getters and Setters
-        const Vector2& getPosition() const { return mPosition; }
-    	void setPosition(const Vector2& pos) { mPosition = pos; }
+        const Math::Vector2& getPosition() const { return mPosition; }
+    	void setPosition(const Math::Vector2& pos) { mPosition = pos; }
     	float getScale() const { return mScale; }
     	void setScale(float scale) { mScale = scale; }
     	float getRotation() const { return mRotation; }
@@ -37,7 +37,7 @@ namespace Brix {
     private: 
         State mState; 
 
-        Vector2 mPosition; 
+        Math::Vector2 mPosition; 
         float mScale;
         float mRotation; 
 

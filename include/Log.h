@@ -1,5 +1,6 @@
+#ifndef _LOG_CLASS_
+#define _LOG_CLASS_
 
-// #include "Core.h"
 #include "spdlog/spdlog.h"
 
 namespace Brix
@@ -27,3 +28,5 @@ namespace Brix
 #define BX_INFO(...) ::Brix::Log::get_client_logger()->info(__VA_ARGS__)
 #define BX_TRACE(...) ::Brix::Log::get_client_logger()->trace(__VA_ARGS__)
 #define BX_ERROR(...) ::Brix::Log::get_client_logger()->error(__VA_ARGS__)
+
+#endif

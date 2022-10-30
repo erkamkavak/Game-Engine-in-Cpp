@@ -1,19 +1,19 @@
 #include "Actor.h"
 #include "Component.h"
 
+namespace Brix {
+    Component::Component(Actor* owner, int updateOrder) 
+        : mOwnerActor(owner)
+        , mUpdateOrder(updateOrder)
+    {
+        mOwnerActor->addComponent(this); 
+    };
 
+    Component::~Component() {
+        mOwnerActor->removeComponent(this); 
+    };
 
-Component::Component(Actor* owner, int updateOrder = 100) 
-    : mOwnerActor(owner)
-    , mUpdateOrder(updateOrder)
-{
-    mOwnerActor->addComponent(this); 
-};
+    void Component::update(float deltaTime){
 
-Component::~Component() {
-    mOwnerActor->removeComponent(this); 
-};
-
-void Component::update(float deltaTime){
-
-};
+    };
+}

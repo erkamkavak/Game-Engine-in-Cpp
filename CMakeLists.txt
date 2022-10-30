@@ -1,39 +1,49 @@
 cmake_minimum_required(VERSION 3.10)
 set(PROJECT_NAME Brix)
-project(${PROJECT_NAME} VERSION 1.0.0 LANGUAGES CXX)
+project(${PROJECT_NAME})
+
+add_compile_options(-std=c++14)
+add_compile_options(-O2)
+add_compile_options(-pthread)
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
+
 
 find_package(OpenGL)
-# Detect and add SFML
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
-find_package(SDL REQUIRED)
-find_package(SFML 2 REQUIRED COMPONENTS network audio graphics window system)
-find_package(wxWidgets REQUIRED COMPONENTS net core base)
+find_package(SDL2 REQUIRED)
+# find_package(SDL2_image REQUIRED)
+# find_package(SFML 2 REQUIRED COMPONENTS network audio graphics window system)
+# find_package(wxWidgets REQUIRED COMPONENTS net core base)
 
 # Add definitions
 # add_definitions()
 
 # Include directories and files
 include_directories(
-    PRIVATE
-    "include"
-    "libs/spdlog/include"
-    ${SDL2_INCLUDE_DIRS}
-  )
-include(
-    ${wxWidgets_USE_FILE}
+  PRIVATE
+  "include"
+  "libs/spdlog/include"
+  ${SDL2_INCLUDE_DIRS}
+  # ${SDL2_IMAGE_INCLUDE_DIRS}
 )
+# include(
+#     ${wxWidgets_USE_FILE}
+# )
 
 file(GLOB source_files
 	"src/*.cpp"
 )
 
+add_library(BRIX_LIB ${source_files})
+
 set(SOURCES ${source_files})
 set(LIBRARIES
-  sfml-system
-  sfml-window
-  sfml-graphics
-  ${wxWidgets_LIBRARIES}
+  # sfml-system
+  # sfml-window
+  # sfml-graphics
+  # ${wxWidgets_LIBRARIES}
   ${SDL2_LIBRARIES}
+  BRIX_LIB
+  # ${SDL2_IMAGE_LIBRARIES}
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
