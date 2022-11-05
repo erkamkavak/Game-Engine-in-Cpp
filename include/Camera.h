@@ -8,16 +8,15 @@ namespace Brix
 {
     class Camera {
     public:
-        Camera(class Game* game, Math::Vector3 position); 
+        Camera(int screenHeight, int screenWidth, Math::Vector3 position); 
         virtual ~Camera();
 
-        void control(SDL_Event event); 
-        void movePosition(int axis, int direction); 
+        void control(SDL_Event event, uint32_t delta); 
+        void movePosition(int axis, int direction, uint32_t delta); 
         void rotateYaw(double angle); 
         void rotatePitch(double angle); 
         Math::Matrix4 getExtrinsicMatrix(); 
 
-        class Game* game; 
         Math::Vector4 position; 
         Math::Matrix4 view; 
         float hFov, vFov;

@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.10)
 set(PROJECT_NAME Brix)
 project(${PROJECT_NAME})
 
-add_compile_options(-std=c++14)
-add_compile_options(-O2)
-add_compile_options(-pthread)
+# add_compile_options(-std=c++14)
+# add_compile_options(-O2)
+# add_compile_options(-pthread)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 
 
@@ -19,21 +19,13 @@ find_package(SDL2 REQUIRED)
 
 # Include directories and files
 include_directories(
-  PRIVATE
-  "include"
-  "libs/spdlog/include"
   ${SDL2_INCLUDE_DIRS}
-  # ${SDL2_IMAGE_INCLUDE_DIRS}
-)
-# include(
-#     ${wxWidgets_USE_FILE}
-# )
-
-file(GLOB source_files
-	"src/*.cpp"
+  include
+  libs/spdlog/include
 )
 
-add_library(BRIX_LIB ${source_files})
+file(GLOB source_files "src/*.cpp" "include/*.h")
+# file(GLOB_RECURSE lib_files "libs/*.h" "libs/*.c" "libs/*.cpp")
 
 set(SOURCES ${source_files})
 set(LIBRARIES
@@ -42,7 +34,6 @@ set(LIBRARIES
   # sfml-graphics
   # ${wxWidgets_LIBRARIES}
   ${SDL2_LIBRARIES}
-  BRIX_LIB
   # ${SDL2_IMAGE_LIBRARIES}
 )
 

@@ -1,6 +1,5 @@
 #include <Object3D.h>
-#include <Camera.h>
-#include <Game.h>
+#include <Renderer.h>
 
 namespace Brix
 {
@@ -14,20 +13,16 @@ namespace Brix
 
     };
 
-    void Object3D::draw(Game* game) {
-
-    }; 
-
-    void Object3D::projectToScreen(Game* game) {
-        // convert vertexes to camera space
+    void Object3D::projectToScreen(Renderer* renderer) {
         std::vector<Math::Vector4> vertexesProcessed(vertexes.size()); 
         std::vector<Math::Vector2> screenVertexes(vertexes.size()); 
-        Math::Matrix4 cameraExtrinsicMatrix = game->camera->getExtrinsicMatrix(); 
+        Math::Matrix4 cameraExtrinsicMatrix = renderer->getCamera()->getExtrinsicMatrix(); 
         for(int i = 0; i < vertexes.size(); i++) {
             vertexesProcessed[i] = vertexes[i]; 
+            // convert vertexes to camera space
             vertexesProcessed[i] = vertexesProcessed[i] * cameraExtrinsicMatrix;
             // using projection matrix, transfer camera space vertexes to clip space  
-            vertexesProcessed[i] = vertexesProcessed[i] * game->projectionMatrix; 
+            vertexesProcessed[i] = vertexesProcessed[i] * renderer->getProjectionMatrix(); 
             // normalize the values of vertexes(using the 4'th value of each row -> w should be 1 for each row)
             vertexesProcessed[i].normalize();
             // clamp the values clip space vertexes between -2 and 2
@@ -35,22 +30,12 @@ namespace Brix
             vertexesProcessed[i].y = Math::clamp(vertexesProcessed[i].y, -2.0f, 2.0f); 
             vertexesProcessed[i].z = Math::clamp(vertexesProcessed[i].z, -2.0f, 2.0f); 
             // convert clip space vertexes to screen space vertexes((0, 0) coordinate becomes left up side)
-            vertexesProcessed[i] = vertexesProcessed[i] * game->toScreenMatrix; 
+            vertexesProcessed[i] = vertexesProcessed[i] * renderer->getToScreenMatrix(); 
             // since the screen is only 2D, we slice the vertexes
             screenVertexes[i] = Math::Vector2(vertexesProcessed[i].x, vertexesProcessed[i].y);
         }
         // now we display vertexes and faces
-        SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-        for(int i = 0; i < faces.size(); i++) {
-            std::vector<int> face = faces[i];
-            for(int i = 0; i < face.size() - 1; i++) {
-                Math::Vector2 faceCorner = screenVertexes[face[i]];
-                Math::Vector2 faceNextCorner = screenVertexes[face[i + 1]];
-                SDL_RenderDrawLine(game->renderer, 
-                    faceCorner.x, faceCorner.y, faceNextCorner.x, faceNextCorner.y);
-            } 
-        }
-        SDL_RenderPresent(game->renderer); 
+        renderer->renderObject3D(screenVertexes, faces);
     }; 
 
     void Object3D::translate(Math::Vector3 pos){

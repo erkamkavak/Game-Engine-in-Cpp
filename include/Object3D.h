@@ -11,8 +11,7 @@ namespace Brix
         Object3D(std::vector<Math::Vector4> vertexes, std::vector<std::vector<int>> faces); 
         virtual ~Object3D();
 
-        void draw(class Game* game); 
-        void projectToScreen(class Game* game); 
+        void projectToScreen(class Renderer* renderer); 
 
         void translate(Math::Vector3 pos); 
         void scale(int scale_size); 

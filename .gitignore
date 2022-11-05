@@ -1,2 +1,3 @@
 build
 .vscode
+libs/fast_obj/fast_obj.h
